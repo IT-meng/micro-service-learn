@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>maven_parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+
+
+<!--    配置多环境-->
+    <profiles>
+        <profile>
+            <id>env_dev</id>
+            <properties>
+                <jdbc.url>jdbc:mysql://localhost:3306/db4</jdbc.url>
+            </properties>
+<!--            设置此环境为默认环境-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+        </profile>
+
+
+        <profile>
+            <id>env_test</id>
+            <properties>
+                <jdbc.url>jdbc:mysql://localhost:3306/TestDB</jdbc.url>
+            </properties>
+        </profile>
+    </profiles>
+
+
+
+
+    <properties>
+<!--        可以在这个标签里配置属性,要用的时候直接${}取就行-->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <source.version>1.8</source.version>
+        <target.version>1.8</target.version>
+    </properties>
+
+
+
+<!--    把每个模块都会用到的依赖抽取出来放在，一个pom文件中-->
+
+<!--    一个模块想使用其他模块配置好的依赖时，只需要继承该模块-->
+<!--    <parent>-->
+<!--        <groupId>com.littlezhou</groupId>-->
+<!--        <artifactId>ssm_service</artifactId>-->
+<!--        <version>1.0-SNAPSHOT</version>-->
+<!--        <relativePath></relativePath>-->
+<!--    </parent>-->
+<!--    如上就继承了一个模块-->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.littlezhou</groupId>
+            <artifactId>ssm_dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+
+<!--    如果父工程中导依赖时用了depdenciesManagement,则子工程如果需要用到那一部分依赖需显示导入,但不需要指定版本-->
+<dependencyManagement>
+
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            <groupId>com.littlezhou</groupId>-->
+<!--            <artifactId>ssm_service</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
+
+</dependencyManagement>
+
+
+    <build>
+
+
+
+        <resources>
+<!--            让其它文件也可以应用maven中定义的属性-->
+          <resource>
+              <directory>${project.basedir}...</directory>
+              <filtering>true</filtering>
+          </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                   <source>${source.version}</source>
+                    <target>${target.version}</target>
+                </configuration>
+            </plugin>
+
+
+<!--            配置跳过测试-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+<!--                    跳过所有测试-->
+<!--                    <skipTests>true</skipTests>-->
+
+<!--                    跳过指定测试类-->
+                    <skipTests>false</skipTests>
+
+                    <excludes>
+                        <exclude>**/BookService.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+
+</project>

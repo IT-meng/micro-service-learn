@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    1、导入sprinf坐标-->
+
+<!--    2、配置Bean-->
+
+<!--    name属性用于配置别名，多个别名之间可以用逗号、空格或者分号分隔-->
+    <bean id="userDao" name="userdao1 userdao2" class="com.littlezhou.dao.impl.UserDaoimpl"/>
+
+<!--    spring默认创造的Bean是单例的可用scope属性配置-->
+
+    <bean id="userService" class="com.littlezhou.service.impl.UserServiceimpl" scope="singleton">
+<!--        3、配置service和dao的关系-->
+<!--        name表示配置com.littlezhou.service.impl.UserServiceimpl中的name属性-->
+<!--        ref表示将该属性设置为ref指向的Bean-->
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+</beans>

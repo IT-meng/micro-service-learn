@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--  spring实例化Bean的三种方式-->
+
+<!--    方式1：构造方法实例化-->
+<!--    class配的类就是ApplicationContext.getBean(id)方法返回的类型-->
+<!--    没有无参构造会报错-->
+<!--    <bean id="userDao" class="com.littlezhou.dao.impl.UserDaoimpl"></bean>-->
+
+<!--    方式2：静态工厂实例化-->
+<!--    配置的类为工厂类，需指明哪个方法是创建对象的方法-->
+    <bean id="orderDao" class="com.littlezhou.factory.OrderDaoFactory" factory-method="getOrderDao" scope="singleton"></bean>
+
+<!--    方式3：实例化工厂实例化-->
+<!--    先得有工厂的实例-->
+    <bean id="userDaoFactory" class="com.littlezhou.factory.UserDaoFactory"></bean>
+
+    <bean id="userDao" factory-bean="userDaoFactory" factory-method="getUserDao"></bean>
+
+<!--    方式4：实例化工厂实现FactoryBean接口-->
+    <bean id="bookDao" class="com.littlezhou.factory.BookDaoFactory"></bean>
+
+
+<!--    依赖注入-->
+    <bean id="fileDao" class="com.littlezhou.dao.impl.FileDaoimpl"></bean>
+    <bean id="fileService" class="com.littlezhou.service.impl.FileServiceimpl">
+        <property name="bookDao" ref="bookDao"></property>
+        <property name="num" value="10"></property>
+        <property name="name" value="aaa"></property>
+    </bean>
+
+</beans>
